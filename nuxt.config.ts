@@ -3,7 +3,12 @@ export default defineNuxtConfig({
   ssr: false,
   telemetry: false,
   devtools: { enabled: false },
-  modules: ['@nuxt/ui', '@pinia/nuxt'],
+  modules: [
+    '@nuxt/ui',
+    '@pinia/nuxt',
+    '@nuxt/eslint',
+    '@nuxt/test-utils/module',
+  ],
   css: ['~/assets/css/main.css'],
   app: {
     head: {
