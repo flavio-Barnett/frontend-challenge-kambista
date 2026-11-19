@@ -9,6 +9,9 @@ export default defineNuxtConfig({
     head: {
       title: 'Qolqa',
       htmlAttrs: { lang: 'es' },
+      link: [
+        { rel: 'icon', type: 'image/svg+xml', href: '/brand/qolqa-mark.svg' },
+      ],
     },
   },
   runtimeConfig: {
@@ -22,5 +25,26 @@ export default defineNuxtConfig({
   typescript: {
     strict: true,
     typeCheck: false,
+  },
+  ui: {
+    colorMode: false,
+  },
+  fonts: {
+    defaults: {
+      subsets: ['latin'],
+      styles: ['normal'],
+    },
+    families: [
+      { name: 'Geist', provider: 'google', weights: [400, 500, 600] },
+      { name: 'Geist Mono', provider: 'google', weights: [500] },
+      { name: 'Bricolage Grotesque', provider: 'google', weights: [600, 700] },
+    ],
+  },
+  icon: {
+    provider: 'none',
+    serverBundle: false,
+    clientBundle: {
+      scan: true,
+    },
   },
 });
