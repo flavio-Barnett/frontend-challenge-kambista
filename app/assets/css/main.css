@@ -1,0 +1,138 @@
+@import 'tailwindcss';
+@import '@nuxt/ui';
+
+@theme static {
+  --font-sans:
+    'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Bricolage Grotesque', 'Geist', system-ui, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --color-andino-50: #f4f8f7;
+  --color-andino-100: #e4eae9;
+  --color-andino-200: #ced6d4;
+  --color-andino-300: #acb7b5;
+  --color-andino-400: #879593;
+  --color-andino-500: #687875;
+  --color-andino-600: #4e605d;
+  --color-andino-700: #354945;
+  --color-andino-800: #213532;
+  --color-andino-900: #0e2320;
+  --color-andino-950: #061210;
+
+  --color-maiz-50: #fff6e6;
+  --color-maiz-100: #fdf0cc;
+  --color-maiz-200: #fee6bc;
+  --color-maiz-300: #ffd78f;
+  --color-maiz-400: #fbc65e;
+  --color-maiz-500: #f5b731;
+  --color-maiz-600: #d39b16;
+  --color-maiz-700: #b18008;
+  --color-maiz-800: #946a01;
+  --color-maiz-900: #775502;
+  --color-maiz-950: #473102;
+
+  --color-arcilla-50: #fff4f1;
+  --color-arcilla-100: #ffe4db;
+  --color-arcilla-200: #fecdbc;
+  --color-arcilla-300: #f6aa90;
+  --color-arcilla-400: #e68462;
+  --color-arcilla-500: #d2643c;
+  --color-arcilla-600: #b9542f;
+  --color-arcilla-700: #a04523;
+  --color-arcilla-800: #8b3819;
+  --color-arcilla-900: #772c0e;
+  --color-arcilla-950: #521801;
+
+  --color-selva-50: #effaf3;
+  --color-selva-100: #e3f3ea;
+  --color-selva-200: #c7e1d2;
+  --color-selva-300: #a4cab4;
+  --color-selva-400: #7cb093;
+  --color-selva-500: #5a9977;
+  --color-selva-600: #3b8460;
+  --color-selva-700: #19704a;
+  --color-selva-800: #0c5d3c;
+  --color-selva-900: #014a2e;
+  --color-selva-950: #012918;
+
+  --color-achiote-50: #fff4f2;
+  --color-achiote-100: #fbe7e4;
+  --color-achiote-200: #ffd1c9;
+  --color-achiote-300: #fab0a4;
+  --color-achiote-400: #ee8e7f;
+  --color-achiote-500: #e06f5f;
+  --color-achiote-600: #d15444;
+  --color-achiote-700: #c0392b;
+  --color-achiote-800: #a1291e;
+  --color-achiote-900: #841a11;
+  --color-achiote-950: #4f0100;
+
+  --color-lago-50: #f2f7fe;
+  --color-lago-100: #dfedff;
+  --color-lago-200: #c8ddf7;
+  --color-lago-300: #a5c4ea;
+  --color-lago-400: #80a8da;
+  --color-lago-500: #5f8fc9;
+  --color-lago-600: #4479ba;
+  --color-lago-700: #2a64a8;
+  --color-lago-800: #1f528e;
+  --color-lago-900: #134175;
+  --color-lago-950: #02234a;
+
+  --color-arena-50: #faf8f3;
+  --color-arena-100: #f1ece2;
+  --color-arena-200: #dcd5c7;
+  --color-arena-300: #c0b9aa;
+  --color-arena-400: #a59d8d;
+  --color-arena-500: #8a8272;
+  --color-arena-600: #4e5f5a;
+  --color-arena-700: #3a4c48;
+  --color-arena-800: #2a3d39;
+  --color-arena-900: #1c2f2c;
+  --color-arena-950: #0e2320;
+
+  --color-page: var(--color-arena-50);
+  --color-card: #ffffff;
+  --color-subtle: var(--color-arena-100);
+  --color-accent: #8f5f00;
+  --color-hairline: var(--color-arena-200);
+  --color-control: var(--color-arena-500);
+  --color-on-brand: var(--color-andino-900);
+  --color-focus: var(--color-andino-900);
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  --shadow-card:
+    0 1px 2px rgb(14 35 32 / 0.06), 0 4px 16px rgb(14 35 32 / 0.06);
+  --shadow-pop: 0 8px 32px rgb(14 35 32 / 0.16);
+}
+
+:root {
+  --ui-radius: 8px;
+
+  --ui-secondary: var(--ui-color-secondary-900);
+  --ui-success: var(--ui-color-success-700);
+  --ui-error: var(--ui-color-error-700);
+  --ui-info: var(--ui-color-info-700);
+
+  --ui-text-dimmed: var(--color-arena-500);
+  --ui-text-muted: var(--color-arena-600);
+  --ui-text-toned: var(--color-arena-600);
+  --ui-text: var(--color-andino-900);
+  --ui-text-highlighted: var(--color-andino-900);
+  --ui-text-inverted: #ffffff;
+
+  --ui-bg: var(--color-page);
+  --ui-bg-muted: var(--color-subtle);
+  --ui-bg-elevated: var(--color-card);
+  --ui-bg-accented: var(--color-subtle);
+  --ui-bg-inverted: var(--color-andino-900);
+
+  --ui-border: var(--color-hairline);
+  --ui-border-muted: var(--color-hairline);
+  --ui-border-accented: var(--color-control);
+  --ui-border-inverted: var(--color-andino-900);
+}

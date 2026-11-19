@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-16 -16 316 112" width="632" height="224">
+<g transform="scale(1.25)">
+<g>
+  <rect width="64" height="64" rx="16" fill="#0E2320"></rect>
+  <path d="M30 13a17 17 0 1 0 0.01 0Zm0 8a9 9 0 1 1 -0.01 0Z" fill="#F5B731" fill-rule="evenodd"></path>
+  <rect x="38" y="40" width="8" height="8" fill="#F5B731"></rect><rect x="46" y="48" width="8" height="8" fill="#F5B731"></rect>
+</g>
+</g><g transform="translate(100 2) scale(0.9)">
+<g fill="#0E2320">
+  <path d="M18 24a18 18 0 1 0 0.01 0Zm0 8a10 10 0 1 1 -0.01 0Z" fill-rule="evenodd"></path>
+  <rect x="28" y="24" width="8" height="42"></rect><rect x="36" y="66" width="8" height="8"></rect>
+  <path d="M66 24a18 18 0 1 0 0.01 0Zm0 8a10 10 0 1 1 -0.01 0Z" fill-rule="evenodd"></path>
+  <rect x="96" y="8" width="8" height="52"></rect>
+  <path d="M134 24a18 18 0 1 0 0.01 0Zm0 8a10 10 0 1 1 -0.01 0Z" fill-rule="evenodd"></path>
+  <rect x="144" y="24" width="8" height="50"></rect>
+  <path d="M182 24a18 18 0 1 0 0.01 0Zm0 8a10 10 0 1 1 -0.01 0Z" fill-rule="evenodd"></path>
+  <rect x="192" y="24" width="8" height="36"></rect>
+</g>
+</g></svg>
