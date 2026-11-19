@@ -30,6 +30,9 @@ export default defineNuxtConfig({
   typescript: {
     strict: true,
     typeCheck: false,
+    tsConfig: {
+      include: ['../test/unit/**/*'],
+    },
   },
   ui: {
     colorMode: false,
@@ -49,7 +52,9 @@ export default defineNuxtConfig({
     provider: 'none',
     serverBundle: false,
     clientBundle: {
-      scan: true,
+      scan: {
+        globInclude: ['app/**/*.{vue,ts}'],
+      },
     },
   },
 });

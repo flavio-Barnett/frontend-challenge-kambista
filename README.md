@@ -45,6 +45,14 @@ Como la aplicación se publica como archivos estáticos, la variable se lee al e
 
 La integración continua (`.github/workflows/ci.yml`) ejecuta lint, formato, tipos, pruebas, `generate` y `npm audit --audit-level=high` en cada pull request y en cada push a `main`.
 
+## Autenticación
+
+- **Access token solo en memoria.** Vive en el store `session` de Pinia y nunca se guarda en `localStorage` ni `sessionStorage`, así un script inyectado no puede leerlo del almacenamiento del navegador.
+- **Refresh token en cookie HttpOnly.** Lo emite la API en la cookie `refresh_token` (`HttpOnly`, `SameSite=Strict`, `Path=/v1/auth`); el frontend no la lee, solo envía las peticiones a `/v1/auth/*` con `credentials: 'include'`.
+- **Sesión recuperada al recargar.** El middleware global llama una sola vez a `/v1/auth/refresh` y luego a `/v1/auth/me`; si falla, la sesión queda anónima.
+- **Refresh automático ante un 401.** El cliente HTTP (`app/shared/http/api-client.ts`) renueva el token una sola vez aunque fallen varias peticiones a la vez y reintenta la petición original. Si la renovación falla, limpia la sesión y lleva a `/login`.
+- **Redirección segura.** Las páginas privadas envían a `/login?redirect=<ruta>`. Tras iniciar sesión solo se aceptan rutas internas (empiezan con `/`, no con `//` ni con `/\`); cualquier otro valor lleva a `/`.
+
 ## Decisiones
 
 - **SPA sin SSR.** Es un panel autenticado que no necesita SEO, así que se compila como SPA (`ssr: false`) y se publica como archivos estáticos con `nuxt generate`, sin servidor Node en producción.
