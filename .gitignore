@@ -7,7 +7,7 @@ node_modules/
 .data/
 .nitro/
 .cache/
-dist/
+dist
 *.tsbuildinfo
 
 # Tests
