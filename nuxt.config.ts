@@ -30,6 +30,9 @@ export default defineNuxtConfig({
   typescript: {
     strict: true,
     typeCheck: false,
+    tsConfig: {
+      include: ['../test/unit/**/*'],
+    },
   },
   ui: {
     colorMode: false,
