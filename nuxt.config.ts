@@ -52,7 +52,9 @@ export default defineNuxtConfig({
     provider: 'none',
     serverBundle: false,
     clientBundle: {
-      scan: true,
+      scan: {
+        globInclude: ['app/**/*.{vue,ts}'],
+      },
     },
   },
 });

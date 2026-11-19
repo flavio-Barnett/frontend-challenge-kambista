@@ -18,6 +18,22 @@ export default defineAppConfig({
         },
       },
     },
+    navigationMenu: {
+      compoundVariants: [
+        {
+          variant: 'pill',
+          active: true,
+          highlight: false,
+          class: { link: 'font-semibold before:bg-card before:shadow-card' },
+        },
+        {
+          variant: 'pill',
+          active: false,
+          disabled: false,
+          class: { link: 'hover:before:bg-card/60' },
+        },
+      ],
+    },
     button: {
       slots: {
         base: 'rounded-full font-semibold',
