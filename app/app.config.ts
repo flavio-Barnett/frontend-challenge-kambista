@@ -9,6 +9,15 @@ export default defineAppConfig({
       error: 'achiote',
       neutral: 'arena',
     },
+    input: {
+      variants: {
+        size: {
+          xl: {
+            base: 'h-11 px-4 py-0 gap-2 text-base',
+          },
+        },
+      },
+    },
     button: {
       slots: {
         base: 'rounded-full font-semibold',
