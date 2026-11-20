@@ -40,10 +40,12 @@ describe('toUserMessage', () => {
     );
   });
 
-  it('explains that the exchange rate is not available', () => {
-    expect(
-      toUserMessage(apiError(503, 'EXCHANGE_RATE_NOT_AVAILABLE')),
-    ).toContain('no tenemos el tipo de cambio');
+  it.each([
+    ['SAME_CURRENCY', 400, 'Elige monedas distintas'],
+    ['INVALID_AMOUNT', 400, 'Revisa el monto'],
+    ['EXCHANGE_RATE_NOT_AVAILABLE', 503, 'no tenemos el tipo de cambio'],
+  ])('explains the exchange error %s', (code, status, expected) => {
+    expect(toUserMessage(apiError(status, code))).toContain(expected);
   });
 
   it('shows the API message for a validation error', () => {
