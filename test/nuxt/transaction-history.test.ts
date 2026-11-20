@@ -91,6 +91,7 @@ describe('Transaction history', () => {
     expect(row).toContain('US$ 100.00');
     expect(row).toContain('S/ 373.90');
     expect(row).toContain('3.739');
+    expect(history.text()).toContain('Mostrando 1–2 de 2');
   });
 
   it('reads the dates and the page from the address', async () => {
@@ -98,11 +99,13 @@ describe('Transaction history', () => {
       page([transaction('k'), transaction('l')], 12),
     );
 
-    await mountHistory(
+    const history = await mountHistory(
       '/history?startDate=2026-11-01&endDate=2026-11-10&page=2',
     );
 
-    await vi.waitFor(() => expect(requests).toHaveBeenCalled());
+    await vi.waitFor(() =>
+      expect(history.text()).toContain('Mostrando 11–12 de 12'),
+    );
     expect(Object.fromEntries(requests.mock.calls[0]![0])).toMatchObject({
       startDate: '2026-11-01',
       endDate: '2026-11-10',
@@ -176,6 +179,55 @@ describe('Transaction history', () => {
     await retryButton()!.trigger('click');
 
     await vi.waitFor(() => expect(history.findAll('tbody tr')).toHaveLength(1));
+  });
+
+  it('moves to the last page when the page asked for is past the end', async () => {
+    historyEndpoint((query) =>
+      query.get('page') === '3' ? page([transaction('u')], 21) : page([], 21),
+    );
+
+    await mountHistory(
+      '/history?startDate=2026-11-01&endDate=2026-11-10&page=9',
+    );
+
+    await vi.waitFor(() => expect(useRoute().query.page).toBe('3'));
+  });
+  it('changes the page and keeps the dates', async () => {
+    historyEndpoint(() => page([transaction('a')], 30));
+    const history = await mountHistory(
+      '/history?startDate=2026-11-01&endDate=2026-11-10',
+    );
+    await vi.waitFor(() =>
+      expect(history.text()).toContain('Mostrando 1–10 de 30'),
+    );
+
+    await history
+      .findAll('button')
+      .find((button) => button.text() === '2')!
+      .trigger('click');
+
+    await vi.waitFor(() =>
+      expect(useRoute().query).toEqual({
+        startDate: '2026-11-01',
+        endDate: '2026-11-10',
+        page: '2',
+      }),
+    );
+  });
+
+  it('counts from the page when the total header is missing', async () => {
+    historyEndpoint(() =>
+      Response.json([transaction('k'), transaction('l'), transaction('m')]),
+    );
+
+    const history = await mountHistory(
+      '/history?startDate=2026-11-01&endDate=2026-11-10&page=2',
+    );
+
+    await vi.waitFor(() =>
+      expect(history.text()).toContain('Mostrando 11–13 de 13'),
+    );
+    expect(useRoute().query.page).toBe('2');
   });
 
   it('names the date picker with the chosen range', async () => {

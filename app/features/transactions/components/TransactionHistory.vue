@@ -2,12 +2,23 @@
 import { useHistoryPage } from '../composables/useHistoryPage';
 import HistoryCardList from './HistoryCardList.vue';
 import HistoryFilters from './HistoryFilters.vue';
+import HistoryPagination from './HistoryPagination.vue';
 import HistoryTable from './HistoryTable.vue';
 
 const SKELETON_ROWS = 5;
 
-const { range, items, status, error, retry, loading, isEmpty } =
-  useHistoryPage();
+const {
+  range,
+  page,
+  items,
+  total,
+  status,
+  error,
+  retry,
+  loading,
+  isEmpty,
+  pageSize,
+} = useHistoryPage();
 </script>
 
 <template>
@@ -69,6 +80,13 @@ const { range, items, status, error, retry, loading, isEmpty } =
         :loading="loading"
         :skeleton-rows="SKELETON_ROWS"
         class="md:hidden"
+      />
+      <HistoryPagination
+        v-if="total > 0"
+        v-model:page="page"
+        :total="total"
+        :page-size="pageSize"
+        :disabled="loading"
       />
     </template>
   </section>
