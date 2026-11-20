@@ -23,6 +23,8 @@ const MESSAGES_BY_CODE: Readonly<Record<string, string>> = {
     'Revisa el monto: debe ser mayor a 0, con máximo 2 decimales y hasta 9,999,999.99.',
   EXCHANGE_RATE_NOT_AVAILABLE:
     'Por ahora no tenemos el tipo de cambio disponible. Intenta de nuevo en unos minutos.',
+  INVALID_DATE_RANGE:
+    'Revisa las fechas elegidas: deben ser días válidos y la fecha de inicio no puede ser posterior a la de fin.',
 };
 
 const CODES_WITH_API_MESSAGE = new Set([

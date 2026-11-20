@@ -44,6 +44,7 @@ describe('toUserMessage', () => {
     ['SAME_CURRENCY', 400, 'Elige monedas distintas'],
     ['INVALID_AMOUNT', 400, 'Revisa el monto'],
     ['EXCHANGE_RATE_NOT_AVAILABLE', 503, 'no tenemos el tipo de cambio'],
+    ['INVALID_DATE_RANGE', 400, 'Revisa las fechas'],
   ])('explains the exchange error %s', (code, status, expected) => {
     expect(toUserMessage(apiError(status, code))).toContain(expected);
   });
