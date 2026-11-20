@@ -53,6 +53,15 @@ La integración continua (`.github/workflows/ci.yml`) ejecuta lint, formato, tip
 - **Refresh automático ante un 401.** El cliente HTTP (`app/shared/http/api-client.ts`) renueva el token una sola vez aunque fallen varias peticiones a la vez y reintenta la petición original. Si la renovación falla, limpia la sesión y lleva a `/login`.
 - **Redirección segura.** Las páginas privadas envían a `/login?redirect=<ruta>`. Tras iniciar sesión solo se aceptan rutas internas (empiezan con `/`, no con `//` ni con `/\`); cualquier otro valor lleva a `/`.
 
+## Cambio de divisas
+
+La pantalla **Cambiar** (`/exchange`) muestra el tipo de cambio del día y permite registrar un cambio de USD a PEN o de PEN a USD.
+
+- **Tipo de cambio en vivo.** Se consulta `GET /v1/exchange-rates/current` al entrar y cada 30 segundos; la consulta se pausa mientras la pestaña está oculta y se repite al volver. Si la API responde 503 se avisa que no hay tipo de cambio y el botón de cambio queda deshabilitado; ante un error de red se ofrece **Reintentar**.
+- **Estimado y valor final.** Mientras escribes se calcula cuánto recibirías: USD → PEN multiplica por la venta y PEN → USD divide entre la compra, redondeando a 2 decimales hacia arriba desde la mitad (`ROUND_HALF_UP`). El cálculo usa enteros (centavos y el tipo de cambio escalado), sin errores de coma flotante. Es solo una referencia: al confirmar se envían únicamente las monedas y el monto, y lo que se muestra como resultado es lo que devuelve la API.
+- **Confirmación.** El campo de monto solo acepta números y un punto decimal (una coma se convierte en punto). **Cambiar ahora** valida el formulario y abre un modal para confirmar cuánto envías, qué tipo de cambio se aplica y cuánto recibirías; mientras se registra no se puede cerrar ni enviar dos veces. Si la API responde con error, el mensaje aparece en el modal y puedes reintentar o cancelar. Al terminar, el modal muestra lo que devolvió la API (montos, tipo de cambio, fecha y N.º de operación) y **Hacer otro cambio** limpia el formulario.
+- **Validaciones.** El monto es obligatorio, mayor a 0, con máximo 2 decimales (acepta punto o coma) y hasta 9,999,999.99; las monedas de origen y destino deben ser distintas. Los errores aparecen al salir del campo o al enviar.
+
 ## Decisiones
 
 - **SPA sin SSR.** Es un panel autenticado que no necesita SEO, así que se compila como SPA (`ssr: false`) y se publica como archivos estáticos con `nuxt generate`, sin servidor Node en producción.

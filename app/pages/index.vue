@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { useSessionStore } from '~/features/auth/stores/session';
+import ExchangeShortcutCard from '~/features/exchange-rates/components/ExchangeShortcutCard.vue';
+import { useCurrentRate } from '~/features/exchange-rates/composables/useCurrentRate';
 import { firstName } from '~/shared/format/person-name';
 
 definePageMeta({ title: 'Inicio' });
@@ -7,12 +9,9 @@ definePageMeta({ title: 'Inicio' });
 const session = useSessionStore();
 const greetingName = computed(() => firstName(session.user?.nombre ?? ''));
 
+const { rate, status } = useCurrentRate();
+
 const upcomingModules = [
-  {
-    icon: 'i-lucide-arrow-left-right',
-    title: 'Cambia tus dólares o soles',
-    description: 'Mira cuánto recibes con el tipo de cambio del día.',
-  },
   {
     icon: 'i-lucide-history',
     title: 'Revisa tus operaciones',
@@ -31,6 +30,9 @@ const upcomingModules = [
     </header>
 
     <ul class="grid gap-4 md:grid-cols-2">
+      <li>
+        <ExchangeShortcutCard :rate="rate" :loading="status === 'loading'" />
+      </li>
       <li
         v-for="module in upcomingModules"
         :key="module.title"
