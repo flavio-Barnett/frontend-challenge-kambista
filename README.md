@@ -6,7 +6,7 @@ Frontend del reto técnico de Kambista: una aplicación web para cambiar USD ⇄
 
 - Node.js 24 (versión fijada en `.nvmrc`)
 - npm
-- La API del reto en marcha (repositorio `api-challenge-kambista`), por defecto en http://localhost:3000
+- La API del reto en marcha ([api-challenge-kambista](https://github.com/flavio-Barnett/api-challenge-kambista)), por defecto en http://localhost:3000
 
 ## Cómo levantarlo
 
