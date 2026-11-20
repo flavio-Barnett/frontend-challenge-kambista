@@ -70,13 +70,22 @@ function confirm(): void {
     </template>
 
     <template #footer>
-      <UButton
-        v-if="transaction"
-        label="Hacer otro cambio"
-        icon="i-lucide-repeat"
-        block
-        @click="open = false"
-      />
+      <template v-if="transaction">
+        <UButton
+          label="Ver historial"
+          to="/history"
+          color="neutral"
+          variant="soft"
+          icon="i-lucide-history"
+          class="w-full justify-center sm:w-auto"
+        />
+        <UButton
+          label="Hacer otro cambio"
+          icon="i-lucide-repeat"
+          class="w-full justify-center sm:w-auto"
+          @click="open = false"
+        />
+      </template>
       <template v-else>
         <UButton
           label="Cancelar"
