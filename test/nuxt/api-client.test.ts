@@ -129,4 +129,32 @@ describe('api client', () => {
 
     expect(session.expire).toHaveBeenCalledTimes(1);
   });
+
+  it('returns the body together with the response headers', async () => {
+    endpoint('/v1/transactions/history', () =>
+      Response.json(['tx-1'], { headers: { 'X-Total-Count': '57' } }),
+    );
+    const api = createApiClient({
+      baseURL: '',
+      session: fakeSession(FRESH_TOKEN),
+    });
+
+    const response = await api.raw<string[]>('/v1/transactions/history');
+
+    expect(response.data).toEqual(['tx-1']);
+    expect(response.headers.get('X-Total-Count')).toBe('57');
+  });
+
+  it('refreshes and retries a request that needs the headers', async () => {
+    const handler = vi.fn(acceptOnly(FRESH_TOKEN, ['tx-1']));
+    endpoint('/v1/transactions/history', handler);
+    const session = fakeSession(EXPIRED_TOKEN);
+    const api = createApiClient({ baseURL: '', session });
+
+    const response = await api.raw('/v1/transactions/history');
+
+    expect(response.data).toEqual(['tx-1']);
+    expect(session.refresh).toHaveBeenCalledTimes(1);
+    expect(handler).toHaveBeenCalledTimes(2);
+  });
 });

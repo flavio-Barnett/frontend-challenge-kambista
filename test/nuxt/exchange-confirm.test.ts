@@ -101,6 +101,9 @@ describe('Exchange confirmation', () => {
     expect(bodyText()).toContain('S/ 374.10');
     expect(bodyText()).toContain('3.741');
     expect(bodyText()).toContain('E7D57CE8');
+    expect(
+      document.body.querySelector('a[href="/history"]')?.textContent,
+    ).toContain('Ver historial');
   });
 
   it('closes and clears the form to start another exchange', async () => {

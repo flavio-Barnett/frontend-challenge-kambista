@@ -62,6 +62,16 @@ La pantalla **Cambiar** (`/exchange`) muestra el tipo de cambio del día y permi
 - **Confirmación.** El campo de monto solo acepta números y un punto decimal (una coma se convierte en punto). **Cambiar ahora** valida el formulario y abre un modal para confirmar cuánto envías, qué tipo de cambio se aplica y cuánto recibirías; mientras se registra no se puede cerrar ni enviar dos veces. Si la API responde con error, el mensaje aparece en el modal y puedes reintentar o cancelar. Al terminar, el modal muestra lo que devolvió la API (montos, tipo de cambio, fecha y N.º de operación) y **Hacer otro cambio** limpia el formulario.
 - **Validaciones.** El monto es obligatorio, mayor a 0, con máximo 2 decimales (acepta punto o coma) y hasta 9,999,999.99; las monedas de origen y destino deben ser distintas. Los errores aparecen al salir del campo o al enviar.
 
+## Historial
+
+La pantalla **Historial** (`/history`) lista tus cambios con `GET /v1/transactions/history`, del más reciente al más antiguo.
+
+- **Fechas.** Por defecto muestra los últimos 30 días; también hay atajos (últimos 7 días, últimos 30 días, este mes) y un calendario para elegir un rango. "Hoy" se calcula en hora de Lima, igual que la API, y no se pueden elegir fechas futuras.
+- **Dirección compartible.** Las fechas y la página viven en la URL (`?startDate=2026-11-01&endDate=2026-11-20&page=2`), así que recargar o compartir el enlace conserva el filtro. Si la URL trae fechas inválidas se usan los últimos 30 días, y si la página no existe se va a la última.
+- **Paginación.** 10 operaciones por página; el total sale de la cabecera `X-Total-Count`.
+- **Estados.** Muestra filas de carga, un mensaje cuando no hay cambios en el rango (con acceso a **Hacer un cambio**) y **Reintentar** si algo falla. Si cambias el filtro antes de que llegue la respuesta anterior, esa respuesta se descarta.
+- **Accesos.** Se llega desde el menú, la tarjeta **Revisa tus operaciones** del inicio y el botón **Ver historial** al terminar un cambio.
+
 ## Decisiones
 
 - **SPA sin SSR.** Es un panel autenticado que no necesita SEO, así que se compila como SPA (`ssr: false`) y se publica como archivos estáticos con `nuxt generate`, sin servidor Node en producción.

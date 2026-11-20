@@ -4,12 +4,18 @@ export interface ApiRequestOptions {
   method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   body?: Record<string, unknown>;
   query?: Record<string, string | number | undefined>;
+  signal?: AbortSignal;
 }
 
-export type ApiClient = <T>(
-  path: string,
-  options?: ApiRequestOptions,
-) => Promise<T>;
+export interface ApiResponse<T> {
+  data: T | undefined;
+  headers: Headers;
+}
+
+export interface ApiClient {
+  <T>(path: string, options?: ApiRequestOptions): Promise<T>;
+  raw<T>(path: string, options?: ApiRequestOptions): Promise<ApiResponse<T>>;
+}
 
 export interface ApiSession {
   accessToken(): string | null;
@@ -57,12 +63,12 @@ export function createApiClient({
     return pendingRefresh;
   }
 
-  return async function api<T>(
+  async function withSessionRetry<R>(
     path: string,
-    options: ApiRequestOptions = {},
-  ): Promise<T> {
+    send: () => Promise<R>,
+  ): Promise<R> {
     try {
-      return await request<T>(path, options);
+      return await send();
     } catch (error) {
       if (!isUnauthorized(error) || SESSION_PATHS.has(path)) {
         throw error;
@@ -73,7 +79,23 @@ export function createApiClient({
         await session.expire();
         throw error;
       }
-      return request<T>(path, options);
+      return send();
     }
-  };
+  }
+
+  function api<T>(path: string, options: ApiRequestOptions = {}): Promise<T> {
+    return withSessionRetry(path, () => request<T>(path, options));
+  }
+
+  async function raw<T>(
+    path: string,
+    options: ApiRequestOptions = {},
+  ): Promise<ApiResponse<T>> {
+    const response = await withSessionRetry(path, () =>
+      request.raw<T>(path, options),
+    );
+    return { data: response._data, headers: response.headers };
+  }
+
+  return Object.assign(api, { raw });
 }
