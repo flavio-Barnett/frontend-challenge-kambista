@@ -36,27 +36,16 @@ describe('Exchange form', () => {
     expect(workspace.find('output').text()).toBe('S/ 373.90');
   });
 
-  it('keeps only digits and a single dot in the amount field', async () => {
+  it('keeps only digits, one dot and up to 2 decimals in the amount', async () => {
     const workspace = await mountWorkspace();
     const amount = workspace.find<HTMLInputElement>(
       'input[inputmode="decimal"]',
     );
 
-    await amount.setValue('1a0,5x0');
+    await amount.setValue('1a0,5x05');
 
     expect(amount.element.value).toBe('10.50');
     expect(workspace.find('output').text()).toBe('S/ 39.26');
-  });
-
-  it('does not let the amount have more than 2 decimals', async () => {
-    const workspace = await mountWorkspace();
-    const amount = workspace.find<HTMLInputElement>(
-      'input[inputmode="decimal"]',
-    );
-
-    await amount.setValue('10.505');
-
-    expect(amount.element.value).toBe('10.50');
     expect(workspace.text()).not.toContain('decimales');
   });
 

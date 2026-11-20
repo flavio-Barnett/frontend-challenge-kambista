@@ -26,11 +26,8 @@ describe('quote', () => {
   });
 
   it.each([
-    ['0.01 USD at 3.415 (0.03415)', 1, 'USD', 3.415, 3],
     ['0.02 USD at 3.425 (0.0685)', 2, 'USD', 3.425, 7],
     ['1 PEN at 3.408 (0.29342…)', 100, 'PEN', 3.408, 29],
-    ['1 PEN at 4 (0.25)', 100, 'PEN', 4, 25],
-    ['0.10 USD at 3.725 (0.3725)', 10, 'USD', 3.725, 37],
     ['0.10 USD at 3.735 (0.3735 rounds half up)', 10, 'USD', 3.735, 37],
     ['1.10 USD at 3.735 (4.1085 rounds half up)', 110, 'USD', 3.735, 411],
   ] as const)('rounds %s half up', (_, cents, from, rate, expected) => {

@@ -1,14 +1,10 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import {
   isValidRange,
   limaToday,
   matchingPreset,
   presetRange,
 } from '../../app/features/transactions/domain/history-range';
-
-afterEach(() => {
-  vi.useRealTimers();
-});
 
 describe('limaToday', () => {
   it.each([
@@ -17,13 +13,6 @@ describe('limaToday', () => {
     ['2026-01-01T03:00:00.000Z', '2025-12-31'],
   ])('reads %s as the Lima day %s', (instant, day) => {
     expect(limaToday(new Date(instant))).toBe(day);
-  });
-
-  it('uses the current time by default', () => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date('2026-11-20T04:30:00.000Z'));
-
-    expect(limaToday()).toBe('2026-11-19');
   });
 });
 

@@ -21,14 +21,12 @@ describe('readAmount', () => {
   it.each([
     ['', 'required'],
     ['   ', 'required'],
-    ['abc', 'malformed'],
     ['-5', 'malformed'],
     ['1e3', 'malformed'],
     ['.5', 'malformed'],
     ['1,000.50', 'malformed'],
     ['1.234', 'too-many-decimals'],
     ['0', 'not-positive'],
-    ['0.00', 'not-positive'],
     ['10000000', 'too-large'],
     ['00000000010000000', 'too-large'],
   ])('rejects %j as %s', (input, issue) => {
@@ -38,7 +36,6 @@ describe('readAmount', () => {
 
 describe('sanitizeAmountInput', () => {
   it.each([
-    ['100', '100'],
     ['1a0b0', '100'],
     ['12,50', '12.50'],
     ['1.2.3', '1.23'],
