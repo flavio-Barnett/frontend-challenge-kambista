@@ -18,6 +18,8 @@ const MESSAGES_BY_CODE: Readonly<Record<string, string>> = {
     'Hiciste demasiados intentos. Espera unos minutos antes de volver a intentar.',
   EMAIL_ALREADY_REGISTERED:
     'Ya existe una cuenta con este correo. Inicia sesión o usa otro correo.',
+  EXCHANGE_RATE_NOT_AVAILABLE:
+    'Por ahora no tenemos el tipo de cambio disponible. Intenta de nuevo en unos minutos.',
 };
 
 const CODES_WITH_API_MESSAGE = new Set([
