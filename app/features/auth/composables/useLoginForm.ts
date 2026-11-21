@@ -9,21 +9,21 @@ export function useLoginForm() {
 
   const state = reactive<LoginInput>({ email: '', password: '' });
   const pending = ref(false);
-  const apiError = ref<string | null>(null);
+  const error = ref<string | null>(null);
 
   async function submit(credentials: LoginInput): Promise<void> {
     pending.value = true;
-    apiError.value = null;
+    error.value = null;
     try {
-      await session.login(credentials);
+      await session.logIn(credentials);
       await navigateTo(safeRedirect(route.query.redirect));
-    } catch (error) {
-      apiError.value = toUserMessage(error);
+    } catch (failure) {
+      error.value = toUserMessage(failure);
     } finally {
       state.password = '';
       pending.value = false;
     }
   }
 
-  return { state, pending, apiError, submit };
+  return { state, pending, error, submit };
 }

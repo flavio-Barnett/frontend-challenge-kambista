@@ -7,7 +7,7 @@ export function useLogout() {
   async function logOut(): Promise<void> {
     pending.value = true;
     try {
-      await session.logout();
+      await session.logOut();
       await navigateTo('/login');
     } finally {
       pending.value = false;
