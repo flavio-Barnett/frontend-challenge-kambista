@@ -1,9 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { registerEndpoint } from '@nuxt/test-utils/runtime';
-import {
-  useSessionStore,
-  type SessionUser,
-} from '~/features/auth/stores/session';
+import { useSessionStore } from '~/features/auth/stores/session';
+import type { SessionUser } from '~/features/auth/api/auth';
 
 const USER: SessionUser = {
   id: 'user-1',
@@ -81,7 +79,7 @@ describe('session store', () => {
       status: 'authenticated',
     });
 
-    await session.logout();
+    await session.logOut();
 
     expect(session.status).toBe('anonymous');
     expect(session.user).toBeNull();

@@ -21,6 +21,10 @@ export function formatMoney(amount: number, currency: CurrencyCode): string {
   return `${CURRENCY_SYMBOLS[currency]} ${amountFormat.format(amount)}`;
 }
 
+export function formatCents(cents: number, currency: CurrencyCode): string {
+  return formatMoney(cents / 100, currency);
+}
+
 export function formatRate(rate: number): string {
   return rateFormat.format(rate);
 }

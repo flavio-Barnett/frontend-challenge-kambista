@@ -3,7 +3,7 @@ import { useRegisterForm } from '../composables/useRegisterForm';
 import { registerSchema } from '../schemas/register.schema';
 import PasswordInput from './PasswordInput.vue';
 
-const { state, pending, apiError, submit } = useRegisterForm();
+const { state, pending, error, submit } = useRegisterForm();
 </script>
 
 <template>
@@ -15,11 +15,11 @@ const { state, pending, apiError, submit } = useRegisterForm();
     </h1>
 
     <UAlert
-      v-if="apiError"
+      v-if="error"
       color="error"
       variant="subtle"
       icon="i-lucide-circle-alert"
-      :title="apiError"
+      :title="error"
       role="alert"
     />
 

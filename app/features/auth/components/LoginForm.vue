@@ -3,7 +3,7 @@ import { useLoginForm } from '../composables/useLoginForm';
 import { loginSchema } from '../schemas/login.schema';
 import PasswordInput from './PasswordInput.vue';
 
-const { state, pending, apiError, submit } = useLoginForm();
+const { state, pending, error, submit } = useLoginForm();
 </script>
 
 <template>
@@ -15,11 +15,11 @@ const { state, pending, apiError, submit } = useLoginForm();
     </h1>
 
     <UAlert
-      v-if="apiError"
+      v-if="error"
       color="error"
       variant="subtle"
       icon="i-lucide-circle-alert"
-      :title="apiError"
+      :title="error"
       role="alert"
     />
 

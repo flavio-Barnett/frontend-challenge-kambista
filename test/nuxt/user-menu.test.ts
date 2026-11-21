@@ -1,10 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 import { mountSuspended } from '@nuxt/test-utils/runtime';
 import UserMenu from '~/features/auth/components/UserMenu.vue';
-import {
-  useSessionStore,
-  type SessionUser,
-} from '~/features/auth/stores/session';
+import { useSessionStore } from '~/features/auth/stores/session';
+import type { SessionUser } from '~/features/auth/api/auth';
 
 function signIn(user: SessionUser): void {
   useSessionStore().$patch({

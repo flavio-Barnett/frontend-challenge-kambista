@@ -1,26 +1,10 @@
 import { defineStore } from 'pinia';
+import * as authApi from '../api/auth';
+import type { AuthResponse, SessionUser } from '../api/auth';
 import type { LoginInput } from '../schemas/login.schema';
 import type { RegisterInput } from '../schemas/register.schema';
 
-export type Role = 'user' | 'admin';
-
-export interface SessionUser {
-  id: string;
-  nombre: string;
-  email: string;
-  rol: Role;
-}
-
 export type SessionStatus = 'unknown' | 'authenticated' | 'anonymous';
-
-interface AuthResponse {
-  access_token: string;
-  usuario: SessionUser;
-}
-
-interface AccessTokenResponse {
-  access_token: string;
-}
 
 export const useSessionStore = defineStore('session', () => {
   const api = useNuxtApp().$api;
@@ -46,35 +30,23 @@ export const useSessionStore = defineStore('session', () => {
     status.value = 'anonymous';
   }
 
-  async function login(credentials: LoginInput): Promise<void> {
-    authenticate(
-      await api<AuthResponse>('/v1/auth/login', {
-        method: 'POST',
-        body: { ...credentials },
-      }),
-    );
+  async function logIn(credentials: LoginInput): Promise<void> {
+    authenticate(await authApi.logIn(api, credentials));
   }
 
   async function register(input: RegisterInput): Promise<void> {
-    authenticate(
-      await api<AuthResponse>('/v1/auth/register', {
-        method: 'POST',
-        body: { ...input },
-      }),
-    );
+    authenticate(await authApi.register(api, input));
   }
 
   async function refreshAccessToken(): Promise<void> {
-    const response = await api<AccessTokenResponse>('/v1/auth/refresh', {
-      method: 'POST',
-    });
+    const response = await authApi.refreshAccessToken(api);
     accessToken.value = response.access_token;
   }
 
   async function recoverSession(): Promise<void> {
     try {
       await refreshAccessToken();
-      user.value = await api<SessionUser>('/v1/auth/me');
+      user.value = await authApi.getCurrentUser(api);
       status.value = 'authenticated';
     } catch {
       clear();
@@ -88,8 +60,8 @@ export const useSessionStore = defineStore('session', () => {
     return pendingRestore;
   }
 
-  async function logout(): Promise<void> {
-    await Promise.allSettled([api('/v1/auth/logout', { method: 'POST' })]);
+  async function logOut(): Promise<void> {
+    await Promise.allSettled([authApi.logOut(api)]);
     clear();
   }
 
@@ -99,9 +71,9 @@ export const useSessionStore = defineStore('session', () => {
     status,
     isAuthenticated,
     isAdmin,
-    login,
+    logIn,
     register,
-    logout,
+    logOut,
     restore,
     refreshAccessToken,
     clear,

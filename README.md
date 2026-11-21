@@ -72,6 +72,44 @@ La pantalla **Historial** (`/history`) lista tus cambios con `GET /v1/transactio
 - **Estados.** Muestra filas de carga, un mensaje cuando no hay cambios en el rango (con acceso a **Hacer un cambio**) y **Reintentar** si algo falla. Si cambias el filtro antes de que llegue la respuesta anterior, esa respuesta se descarta.
 - **Accesos.** Se llega desde el menú, la tarjeta **Revisa tus operaciones** del inicio y el botón **Ver historial** al terminar un cambio.
 
+## Arquitectura
+
+El código se organiza por funcionalidad en `app/features/<módulo>/`; lo transversal vive en `app/shared/`.
+
+```
+app/
+├── features/
+│   ├── auth/            sesión, login y registro
+│   ├── exchange-rates/  tipo de cambio en vivo
+│   └── transactions/    cambio de divisas e historial
+├── pages/               solo componen la pantalla (título y feature)
+└── shared/              cliente HTTP, errores, formatos, navegación y UI común
+
+features/<módulo>/
+├── api/          llamadas HTTP tipadas y tipos de la API
+├── domain/       reglas puras, sin Vue (solo si el módulo tiene reglas propias)
+├── schemas/      esquemas Zod de los formularios
+├── stores/       estado compartido entre pantallas (hoy solo la sesión)
+├── composables/  orquestan cada pantalla: estado, carga y errores
+└── components/   presentacionales: props, eventos y render
+```
+
+Para crear una funcionalidad nueva:
+
+1. `api/`: una función por endpoint con la forma `fn(api, …)` y los tipos de request y response.
+2. `domain/`: las reglas de negocio como funciones puras, con sus pruebas unitarias.
+3. `schemas/`: el esquema Zod del formulario, con mensajes en español.
+4. `composables/`: un `useX` que llama a `api`, usa `domain` y expone estado, carga y error (`toUserMessage`).
+5. `components/`: componentes que usan el composable y solo muestran datos o emiten eventos.
+6. `pages/`: la ruta, que solo compone el componente principal.
+
+Reglas de dependencia:
+
+- página → componentes → composables → store / api → shared. Los componentes nunca llaman a la API directamente.
+- `domain/` no depende de Vue ni de Nuxt.
+- Entre módulos, una sola dirección: `transactions` usa el tipo de cambio de `exchange-rates`, nunca al revés.
+- En `api/` el orden es: imports, tipos (request y luego response), constantes y llamadas HTTP. En `domain/` y en los composables va primero lo público y después las funciones auxiliares.
+
 ## Decisiones
 
 - **SPA sin SSR.** Es un panel autenticado que no necesita SEO, así que se compila como SPA (`ssr: false`) y se publica como archivos estáticos con `nuxt generate`, sin servidor Node en producción.
