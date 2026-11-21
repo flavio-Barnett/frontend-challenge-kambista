@@ -15,16 +15,6 @@ export interface Transaction extends NewTransaction {
   fecha: string;
 }
 
-export function createTransaction(
-  api: ApiClient,
-  { monedaOrigen, monedaDestino, monto }: NewTransaction,
-): Promise<Transaction> {
-  return api<Transaction>('/v1/transactions', {
-    method: 'POST',
-    body: { monedaOrigen, monedaDestino, monto },
-  });
-}
-
 export interface HistoryPageRequest extends HistoryRange {
   page: number;
   limit: number;
@@ -38,6 +28,16 @@ export interface TransactionHistoryPage {
 
 const TOTAL_COUNT_HEADER = 'X-Total-Count';
 const TOTAL_COUNT_PATTERN = /^\d+$/;
+
+export function createTransaction(
+  api: ApiClient,
+  { monedaOrigen, monedaDestino, monto }: NewTransaction,
+): Promise<Transaction> {
+  return api<Transaction>('/v1/transactions', {
+    method: 'POST',
+    body: { monedaOrigen, monedaDestino, monto },
+  });
+}
 
 export async function getTransactionHistory(
   api: ApiClient,
