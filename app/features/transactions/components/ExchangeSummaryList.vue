@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { formatMoney, formatRate } from '~/shared/format/money';
-import { centsToAmount } from '../domain/amount';
+import { formatCents, formatRate } from '~/shared/format/money';
 import type { ExchangePreview } from '../domain/exchange-preview';
 import type { RateSide } from '../domain/quote';
 
@@ -17,7 +16,7 @@ const RATE_SIDE_REASONS: Readonly<Record<RateSide, string>> = {
     <div class="flex items-baseline justify-between gap-4 py-3">
       <dt class="text-muted">Envías</dt>
       <dd class="font-mono font-medium">
-        {{ formatMoney(centsToAmount(preview.cents), preview.from) }}
+        {{ formatCents(preview.cents, preview.from) }}
       </dd>
     </div>
     <div class="flex items-baseline justify-between gap-4 py-3">
@@ -34,9 +33,7 @@ const RATE_SIDE_REASONS: Readonly<Record<RateSide, string>> = {
     <div class="flex items-baseline justify-between gap-4 py-3">
       <dt class="text-muted">Recibes aprox.</dt>
       <dd class="font-mono text-xl font-semibold">
-        {{
-          formatMoney(centsToAmount(preview.quote.convertedCents), preview.to)
-        }}
+        {{ formatCents(preview.quote.convertedCents, preview.to) }}
       </dd>
     </div>
   </dl>

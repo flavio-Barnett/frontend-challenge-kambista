@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { formatMoney } from '~/shared/format/money';
-import { centsToAmount, sanitizeAmountInput } from '../domain/amount';
+import { formatCents } from '~/shared/format/money';
+import { useAmountInput } from '../composables/useAmountInput';
 import { CURRENCIES, type Currency } from '../domain/currency';
 import type { ExchangePreview } from '../domain/exchange-preview';
 import { exchangeSchema } from '../schemas/exchange.schema';
 
-defineProps<{ preview: ExchangePreview | null; disabled: boolean }>();
+const props = defineProps<{
+  preview: ExchangePreview | null;
+  disabled: boolean;
+}>();
 
 defineEmits<{ submit: []; swap: [] }>();
 
@@ -17,22 +20,13 @@ const state = reactive({ amount, from, to });
 
 const currencies = [...CURRENCIES];
 
-const amountField = useTemplateRef('amountField');
+const { update: updateAmount } = useAmountInput(amount, 'amountField');
 
-function updateAmount(value: string | number): void {
-  const raw = String(value);
-  const sanitized = sanitizeAmountInput(raw);
-  amount.value = sanitized;
-  const input = amountField.value?.inputRef;
-  if (!input || input.value === sanitized) {
-    return;
-  }
-  const caret = sanitizeAmountInput(
-    raw.slice(0, input.selectionStart ?? raw.length),
-  ).length;
-  input.value = sanitized;
-  input.setSelectionRange(caret, caret);
-}
+const estimatedAmount = computed(() =>
+  props.preview
+    ? formatCents(props.preview.quote.convertedCents, props.preview.to)
+    : '—',
+);
 </script>
 
 <template>
@@ -93,14 +87,7 @@ function updateAmount(value: string | number): void {
               aria-live="polite"
               class="flex h-11 items-center rounded-md bg-subtle px-4 font-mono text-lg font-medium"
             >
-              {{
-                preview
-                  ? formatMoney(
-                      centsToAmount(preview.quote.convertedCents),
-                      preview.to,
-                    )
-                  : '—'
-              }}
+              {{ estimatedAmount }}
             </output>
           </div>
           <UFormField label="Moneda" name="to" class="w-28">

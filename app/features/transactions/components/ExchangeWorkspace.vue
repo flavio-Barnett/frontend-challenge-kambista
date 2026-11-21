@@ -10,13 +10,13 @@ const props = defineProps<{ rate: ExchangeRate | null }>();
 const { state, preview, swap, reset } = useExchangeForm(toRef(props, 'rate'));
 
 const confirming = ref(false);
-const confirmedPreview = ref<ExchangePreview | null>(null);
+const previewToConfirm = ref<ExchangePreview | null>(null);
 
 function review(): void {
   if (!preview.value) {
     return;
   }
-  confirmedPreview.value = preview.value;
+  previewToConfirm.value = preview.value;
   confirming.value = true;
 }
 </script>
@@ -38,7 +38,7 @@ function review(): void {
     />
     <ExchangeConfirmModal
       v-model:open="confirming"
-      :preview="confirmedPreview"
+      :preview="previewToConfirm"
       @restart="reset"
     />
   </div>
